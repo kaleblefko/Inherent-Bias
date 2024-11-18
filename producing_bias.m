@@ -1,6 +1,16 @@
 % [C1, C2]=produce_single_mode_set(2, [1,4], [2,6], [1, 4], [1, 4], true, [800, 800], [800, 800]);
+N_modes = 5;
+l = 2;
+mean_c1 = [1, 100];
+mean_c2 = [1, 100];
+cov_c1 = [30, 70];
+cov_c2 = [30, 70];
+diag_cov = false;
+N1 = [800, 800];
+N2 = [800, 800];
+even_spread = true;
 
-[C1, C2]=produce_n_mode_set(1, 2, [1, 100], [1, 100], [30, 70], [30, 70], false, [800, 800], [800, 800], true);
+[C1, C2]=produce_n_mode_set(N_modes, l, mean_c1, mean_c2, cov_c1, cov_c2, diag_cov, N1, N2, even_spread);
 
 plot_data(C1, C2, 2);
 
