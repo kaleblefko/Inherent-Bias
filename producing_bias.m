@@ -1,4 +1,5 @@
 % [C1, C2]=produce_single_mode_set(2, [1,4], [2,6], [1, 4], [1, 4], true, [800, 800], [800, 800]);
+close all; clear all; clc
 N_modes = 5;
 l = 2;
 mean_c1 = [1, 100];
@@ -14,6 +15,16 @@ even_spread = true;
 
 plot_data(C1, C2, 2);
 
+X = [C1 C2];
+y = [ones(1,N1(1,1))*1 ones(1,N2(1,1))*-1];
+
+net = feedforwardnet();
+net.trainFcn = 'traingd';
+net = train(net, X, y);
+
+Y = obtain_latent_space_representation(net, X);
+plot_latent_space(Y, y)
+[h_input, p_input, h_latent, p_latent] = ttest(X, Y, y)
 
 function [C1, C2]=produce_single_mode_set(l, m_minmax_c1, m_minmax_c2, cov_minmax_c1, cov_minmax_c2, diag_cov, N1_minmax, N2_minmax)
     m_sz = [l 1];
@@ -76,7 +87,7 @@ function [m, cov]=produce_m_and_cov(m_sz, m_minmax, cov_sz, cov_minmax, diag_cov
 end
 
 function plot_data(C1, C2, dimensions)
-    figure
+    figure(1);
     if dimensions==2
         scatter(C1(1,:), C1(2,:), MarkerEdgeColor="red")
         hold on
@@ -94,4 +105,29 @@ function plot_data(C1, C2, dimensions)
     end
 end
 
+function [h_input, p_input, h_latent, p_latent]=ttest(X, Y, y)
+    input_dist0 = pdist(X(:,(y==1))');
+    input_dist1 = pdist(X(:,(y==-1))');
+    latent_dist0 = pdist(Y((y==1),:));
+    latent_dist1 = pdist(Y((y==-1),:));
+    [h_input,p_input] = ttest2(input_dist0, input_dist1);
+    [h_latent,p_latent] = ttest2(latent_dist0, latent_dist1);
+end
 
+function []=plot_latent_space(Y, y)
+    f = figure(2);
+    gscatter(Y(:,1), Y(:,2), y, 'br', '..', 10);
+    title('t-SNE Visualization of Latent Space');
+    xlabel('t-SNE Dimension 1');
+    ylabel('t-SNE Dimension 2');
+    legend('Location','southeastoutside');
+    grid on;
+end
+
+function [Y]=obtain_latent_space_representation(net, X)
+    W1 = net.IW{1};
+    b1 = net.b{1};
+
+    hidden_layer_outputs = W1 * X + b1; % Get sigmoid activations
+    Y = tsne(hidden_layer_outputs');
+end
