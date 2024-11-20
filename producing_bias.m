@@ -17,10 +17,11 @@ plot_data(C1, C2, 2);
 
 X = [C1 C2];
 y = [ones(1,N1(1,1))*1 ones(1,N2(1,1))*-1];
+number_hidden_layers = 3;
+max_neurons = 10;
+train_fnc = 'traingd';
 
-net = feedforwardnet();
-net.trainFcn = 'traingd';
-net = train(net, X, y);
+net = create_and_train_network(number_hidden_layers, max_neurons, l, train_fnc, X, y);
 
 Y = obtain_latent_space_representation(net, X);
 plot_latent_space(Y, y)
@@ -103,6 +104,16 @@ function plot_data(C1, C2, dimensions)
         xlabel("embedded x1")
         ylabel("embedded x2")
     end
+end
+
+function [net]=create_and_train_network(num_hidden_layers, max_neurons, l, train_fnc, X, y)
+    layers = zeros(1,num_hidden_layers);
+    layers(1)=int8(unifrnd(l, max_neurons));
+    for i=2:num_hidden_layers
+        layers(i)=int8(unifrnd(l, layers(i-1)));
+    end
+    net = feedforwardnet(layers, train_fnc);
+    net = train(net, X, y);
 end
 
 function [h_input, p_input, h_latent, p_latent]=ttest(X, Y, y)
