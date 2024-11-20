@@ -22,10 +22,7 @@ max_neurons = 10;
 train_fnc = 'traingd';
 
 net = create_and_train_network(number_hidden_layers, max_neurons, l, train_fnc, X, y);
-
-Y = obtain_latent_space_representation(net, X);
-plot_latent_space(Y, y)
-[h_input, p_input, h_latent, p_latent] = ttest(X, Y, y)
+analyze_network(net, X, y, number_hidden_layers);
 
 function [C1, C2]=produce_single_mode_set(l, m_minmax_c1, m_minmax_c2, cov_minmax_c1, cov_minmax_c2, diag_cov, N1_minmax, N2_minmax)
     m_sz = [l 1];
@@ -121,8 +118,8 @@ function [h_input, p_input, h_latent, p_latent]=ttest(X, Y, y)
     input_dist1 = pdist(X(:,(y==-1))');
     latent_dist0 = pdist(Y((y==1),:));
     latent_dist1 = pdist(Y((y==-1),:));
-    [h_input,p_input] = ttest2(input_dist0, input_dist1);
-    [h_latent,p_latent] = ttest2(latent_dist0, latent_dist1);
+    [h_input,p_input] = ttest2(input_dist0, latent_dist0);
+    [h_latent,p_latent] = ttest2(input_dist1, latent_dist1);
 end
 
 function []=plot_latent_space(Y, y)
@@ -135,10 +132,27 @@ function []=plot_latent_space(Y, y)
     grid on;
 end
 
-function [Y]=obtain_latent_space_representation(net, X)
-    W1 = net.IW{1};
-    b1 = net.b{1};
-
-    hidden_layer_outputs = W1 * X + b1; % Get sigmoid activations
+function [Y, hidden_layer_outputs]=obtain_latent_space_representation(net, input_to_layer, layer_num)
+    if layer_num == 1
+        W = net.IW{layer_num};
+        b = net.b{layer_num};
+    else
+        W = net.LW{layer_num, layer_num-1};
+        b = net.b{layer_num};
+    end
+    hidden_layer_outputs = W * input_to_layer + b; % Get sigmoid activations
     Y = tsne(hidden_layer_outputs');
+end
+
+function []=analyze_network(net, X, y, num_hidden_layers)
+    for i=1:num_hidden_layers
+        fprintf("Analyzing layer %d...\n", i);
+        if i == 1
+            [Y, hidden_layer_outputs] = obtain_latent_space_representation(net, X, i);
+            [h_input, p_input, h_latent, p_latent] = ttest(X, Y, y)
+        else
+            [Y, hidden_layer_outputs] = obtain_latent_space_representation(net, hidden_layer_outputs, i);
+            [h_input, p_input, h_latent, p_latent] = ttest(hidden_layer_outputs, Y, y)
+        end
+    end
 end
