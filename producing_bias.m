@@ -123,8 +123,8 @@ function [net]=create_and_train_network(num_hidden_layers, max_neurons, l, train
 end
 
 function [h_ttest, p_ttest, p_ranksum, h_ranksum]=compare_distributions(hidden_layer_outputs, y)
-    latent_dist0 = pdist(hidden_layer_outputs(:,(y==1)));
-    latent_dist1 = pdist(hidden_layer_outputs(:,(y==-1)));
+    latent_dist0 = pdist(hidden_layer_outputs(:,(y==1))');
+    latent_dist1 = pdist(hidden_layer_outputs(:,(y==-1))');
     [h_ttest,p_ttest] = ttest2(latent_dist0, latent_dist1);
     [p_ranksum, h_ranksum] = ranksum(latent_dist0, latent_dist1);
 end

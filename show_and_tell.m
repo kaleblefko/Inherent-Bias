@@ -1,4 +1,4 @@
-close all;
+close all;clc
 randn('seed', 0);
 load('C1_2.mat', 'C1');
 load('C2_2.mat', 'C2');
@@ -8,7 +8,6 @@ N1 = [800, 800];
 N2 = [800, 800];
 X = [C1 C2];
 y = [ones(1,size(C1,2))*1 ones(1,size(C2,2))*-1];
-size(X)
 plot_data(C1, C2, 2);
 disp('Analyzing input data...');
 [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(X,y)
@@ -34,8 +33,8 @@ function plot_data(C1, C2, dimensions)
 end
 
 function [h_ttest, p_ttest, p_ranksum, h_ranksum]=compare_distributions(hidden_layer_outputs, y)
-    latent_dist0 = pdist(hidden_layer_outputs(:,(y==1)));
-    latent_dist1 = pdist(hidden_layer_outputs(:,(y==-1)));
+    latent_dist0 = pdist(hidden_layer_outputs(:,(y==1))');
+    latent_dist1 = pdist(hidden_layer_outputs(:,(y==-1))');
     [h_ttest,p_ttest] = ttest2(latent_dist0, latent_dist1);
     [p_ranksum, h_ranksum] = ranksum(latent_dist0, latent_dist1);
 end
