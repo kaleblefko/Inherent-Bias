@@ -8,5 +8,7 @@ function net=create_and_train_network(num_hidden_layers, max_neurons, l, train_f
     for i=1:num_hidden_layers
         net.layers{i}.transferFcn = 'logsig';
     end
+    net.trainParam.showWindow = false;
+    net.trainParam.showCommandLine = false;
     net = train(net, X, y);
 end
