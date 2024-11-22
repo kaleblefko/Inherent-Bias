@@ -11,6 +11,8 @@ cov_min = [10, 20, 30, 40, 50, 60, 70];
 cov_max = [20, 30, 40, 50, 60, 70, 80];
 diag = [true, false];
 
+examples = 1;
+
 number_hidden_layers = 3;
 max_neurons = 10;
 train_fnc = 'traingd';
@@ -69,10 +71,32 @@ for idx = 1:num_combinations
     X = [C1 C2];
     y = [ones(1,size(C1,2))*1 ones(1,size(C2,2))*-1];
 
-    net = create_and_train_network(number_hidden_layers, max_neurons, dim, train_fnc, X, y);
+    if any(isnan(C1), 'all') || any(isnan(C2), 'all')
+        fprintf('Skipping this combination: NaN detected in C1 or C2\n');
+        continue;
+    end
     disp('Analyzing input data...');
-    [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(X,y)
-    analyze_network(net, X, y, number_hidden_layers);
+    [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(X,y);
+
+    if h_ttest || h_ranksum
+        disp('Combination not suitable.')
+        continue;
+    end
+
+    net = create_and_train_network(number_hidden_layers, max_neurons, dim, train_fnc, X, y);
+    possible_bias = analyze_network(net, X, y, number_hidden_layers);
+
+    if possible_bias
+        dir = sprintf('./Examples/example_%d/',examples);
+        save(dir+"C1.mat","C1");
+        save(dir+"C2.mat","C2");
+        save(dir+"net.mat","net");
+        file = fopen(dir+"Params.txt");
+        fprintf(['Parameters: dim=%d, modes=%d, n_min=%d, n_max=%d ' ...
+        'mean_max=%d, mean_min=%d, cov_max=%d, cov_min=%d, diag=%d\n'], ...
+        idx, num_combinations, dim, modes, n_min, n_max, mean_max, mean_min, ...
+        cov_max, cov_min, diag);
+    end
 end
 
 
