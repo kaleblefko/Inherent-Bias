@@ -1,4 +1,4 @@
-function [net]=create_and_train_network(num_hidden_layers, max_neurons, l, train_fnc, X, y)
+function net=create_and_train_network(num_hidden_layers, max_neurons, l, train_fnc, X, y)
     layers = zeros(1,num_hidden_layers);
     layers(1)=int8(unifrnd(l, max_neurons));
     for i=2:num_hidden_layers
