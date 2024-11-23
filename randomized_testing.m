@@ -78,7 +78,12 @@ for idx = 1:num_combinations
     disp('Analyzing input data...');
     [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(X,y);
 
-    if h_ttest || h_ranksum
+    if isnan(h_ranksum) || isnan(h_ttest)
+        disp('Combination not suitable.')
+        continue;
+    end
+
+    if ~h_ranksum || ~h_ttest
         disp('Combination not suitable.')
         continue;
     end
