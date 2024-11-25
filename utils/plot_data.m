@@ -7,12 +7,9 @@ function plot_data(C1, C2, dimensions)
         xlabel("x1")
         ylabel("x2")
     else
-        embedded_C1 = tsne(C1')';
-        embedded_C2 = tsne(C2')';
-        scatter(embedded_C1(1,:), embedded_C1(2,:), MarkerEdgeColor="cyan")
-        hold on
-        scatter(embedded_C2(1,:), embedded_C2(2,:), MarkerEdgeColor="green")
-        xlabel("embedded x1")
-        ylabel("embedded x2")
+        X = [C1 C2];
+        y = [ones(1,size(C1,2))*1 ones(1,size(C2,2))*-1];
+        Y = tsne(X');
+        plot_latent_space(Y,y,1);
     end
 end
