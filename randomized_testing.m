@@ -96,6 +96,7 @@ for idx = 1:num_combinations
 
     if possible_bias
         dir = sprintf('./Examples/example_%d/',examples);
+        mkdir(dir);
         save(dir+"C1.mat","C1");
         save(dir+"C2.mat","C2");
         save(dir+"net.mat","net");
@@ -104,6 +105,7 @@ for idx = 1:num_combinations
         'mean_max=%d, mean_min=%d, cov_max=%d, cov_min=%d, diag=%d\n'], ...
         idx, num_combinations, dim, modes, n_min, n_max, mean_max, mean_min, ...
         cov_max, cov_min, diag);
+        close(file);
     end
 end
 
