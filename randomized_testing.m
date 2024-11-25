@@ -49,7 +49,7 @@ for idx = 1:num_combinations
     cov_min = cov_min_vec(idx);
     diag = diag_vec(idx);
     
-    fprintf(['Processing Combination %d/%d: dim=%d, modes=%d, n_min=%d, n_max=%d ' ...
+    fprintf(['Processing Combination %d/%d: dim=%d, modes=%d, n_min=%d, n_max=%d, ' ...
         'mean_max=%d, mean_min=%d, cov_max=%d, cov_min=%d, diag=%d\n'], ...
         idx, num_combinations, dim, modes, n_min, n_max, mean_max, mean_min, ...
         cov_max, cov_min, diag);
@@ -92,20 +92,26 @@ for idx = 1:num_combinations
     end
 
     net = create_and_train_network(number_hidden_layers, max_neurons, dim, train_fnc, X, y);
-    possible_bias = analyze_network(net, X, y, number_hidden_layers);
+    possible_bias = analyze_network(net, X, y, number_hidden_layers, false);
 
     if possible_bias
         dir = sprintf('./Examples/example_%d/',examples);
+        while(isfolder(dir))
+            examples = examples + 1;
+            dir = sprintf('./Examples/example_%d/',examples);
+        end
         mkdir(dir);
         save(dir+"C1.mat","C1");
         save(dir+"C2.mat","C2");
         save(dir+"net.mat","net");
-        file = fopen(dir+"Params.txt");
-        fprintf(['Parameters: dim=%d, modes=%d, n_min=%d, n_max=%d ' ...
+        file = fopen(dir+"Params.txt", 'w');
+        diary(dir+"Params.txt");
+        fprintf(file, ['Parameters: dim=%d, modes=%d, n_min=%d, n_max=%d ' ...
         'mean_max=%d, mean_min=%d, cov_max=%d, cov_min=%d, diag=%d\n'], ...
-        idx, num_combinations, dim, modes, n_min, n_max, mean_max, mean_min, ...
-        cov_max, cov_min, diag);
-        close(file);
+        dim, modes, n_min, n_max, mean_max, mean_min, cov_max, cov_min, diag);
+        possible_bias = analyze_network(net, X, y, number_hidden_layers, false);
+        fclose(file);
+        diary off;
     end
 end
 
