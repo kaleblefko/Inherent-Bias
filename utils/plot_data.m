@@ -1,5 +1,5 @@
 function plot_data(C1, C2, dimensions)
-    figure;
+    figure(1);
     if dimensions==2
         scatter(C1(1,:), C1(2,:), MarkerEdgeColor="red")
         hold on
@@ -7,8 +7,8 @@ function plot_data(C1, C2, dimensions)
         xlabel("x1")
         ylabel("x2")
     else
-        embedded_C1 = run_umap(C1')';
-        embedded_C2 = run_umap(C2')';
+        embedded_C1 = tsne(C1')';
+        embedded_C2 = tsne(C2')';
         scatter(embedded_C1(1,:), embedded_C1(2,:), MarkerEdgeColor="cyan")
         hold on
         scatter(embedded_C2(1,:), embedded_C2(2,:), MarkerEdgeColor="green")
