@@ -1,6 +1,6 @@
 function [C1, C2]=produce_n_mode_set(N_mode, l, m_minmax_c1, m_minmax_c2, cov_minmax_c1, cov_minmax_c2, diag_cov, N1_minmax, N2_minmax)
-    N1 = randi([N1_minmax(1) N1_minmax(2)],1);
-    N2 = randi([N2_minmax(1) N2_minmax(2)],1);
+    N = randi([N1_minmax(1) N1_minmax(2)],1);
+    % N2 = randi([N2_minmax(1) N2_minmax(2)],1);
    
     N1_per_mode = [];
     N2_per_mode = [];
@@ -9,11 +9,11 @@ function [C1, C2]=produce_n_mode_set(N_mode, l, m_minmax_c1, m_minmax_c2, cov_mi
     C2 = [];
 
     for i=1:N_mode
-        N1_per_mode = [N1_per_mode, floor(N1/N_mode)];
-        N2_per_mode = [N2_per_mode, floor(N1/N_mode)];
+        N1_per_mode = [N1_per_mode, floor(N/N_mode)];
+        N2_per_mode = [N2_per_mode, floor(N/N_mode)];
         if i==N_mode
-            N1_per_mode(i) = N1_per_mode(i) + mod(N1,N_mode);
-            N2_per_mode(i) = N2_per_mode(i) + mod(N2,N_mode);
+            N1_per_mode(i) = N1_per_mode(i) + mod(N,N_mode);
+            N2_per_mode(i) = N2_per_mode(i) + mod(N,N_mode);
         end
     end
     
