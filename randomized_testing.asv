@@ -78,15 +78,12 @@ for idx = 1:num_combinations
     disp('Analyzing input data...');
     [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(X,y);
 
-
-    %TODO: If input data is biased, check the latent spaces for increasing
-    %p values from the input
     if isnan(h_ranksum) || isnan(h_ttest)
         disp('Combination not suitable.')
         continue;
     end
 
-    if ~h_ranksum || ~h_ttest
+    if ~h_ranksum && ~h_ttest
         disp('Combination not suitable.')
         continue;
     end

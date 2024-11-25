@@ -1,5 +1,5 @@
 function plot_data(C1, C2, dimensions)
-    figure(1);
+    figure;
     if dimensions==2
         scatter(C1(1,:), C1(2,:), MarkerEdgeColor="red")
         hold on
