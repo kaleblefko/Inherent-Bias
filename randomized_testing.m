@@ -68,6 +68,12 @@ for idx = 1:num_combinations
     end
 
     [C1, C2] = produce_set(modes, dim, mean_minmax, mean_minmax, cov_minmax, cov_minmax, diag, N_minmax, N_minmax);
+    if size(C1, 2) ~= size(C2, 2)
+        warning('C1 and C2 do not have the same number of points');
+        number_of_points_C1 = size(C1, 2)
+        number_of_points_C2 = size(C2, 2)
+        continue;
+    end
     X = [C1 C2];
     y = [ones(1,size(C1,2))*1 ones(1,size(C2,2))*-1];
 
@@ -95,10 +101,10 @@ for idx = 1:num_combinations
     possible_bias = analyze_network(net, X, y, number_hidden_layers, false);
 
     if possible_bias
-        dir = sprintf('./Examples/example_%d/',examples);
+        dir = sprintf('./testing/example_%d/',examples);
         while(isfolder(dir))
             examples = examples + 1;
-            dir = sprintf('./Examples/example_%d/',examples);
+            dir = sprintf('./testing/example_%d/',examples);
         end
         mkdir(dir);
         save(dir+"C1.mat","C1");
