@@ -1,9 +1,9 @@
 function plot_data(C1, C2, dimensions)
     if dimensions==2
         figure(1);
-        scatter(C1(1,:), C1(2,:), MarkerEdgeColor="red", DisplayName='1')
+        scatter(C1(1,:), C1(2,:), MarkerEdgeColor="red", DisplayName='C1')
         hold on
-        scatter(C2(1,:), C2(2,:), MarkerEdgeColor="blue", DisplayName='-1')
+        scatter(C2(1,:), C2(2,:), MarkerEdgeColor="blue", DisplayName='C2')
         xlabel("x1")
         ylabel("x2")
         legend('Location','southeastoutside');
@@ -12,8 +12,8 @@ function plot_data(C1, C2, dimensions)
     elseif dimensions==3
         figure(1);
         hold on
-        scatter3(C1(1,:),C1(2,:),C1(3,:), 'r', DisplayName='1')
-        scatter3(C2(1,:),C2(2,:),C2(3,:), 'b', DisplayName='-1')
+        scatter3(C1(1,:),C1(2,:),C1(3,:), 'r', DisplayName='C1')
+        scatter3(C2(1,:),C2(2,:),C2(3,:), 'b', DisplayName='C2')
         xlabel("x1")
         ylabel("x2")
         zlabel("x3")

@@ -9,6 +9,6 @@ function f=plot_latent_space(Y, y, plot_num)
     end
     xlabel('t-SNE Dimension 1');
     ylabel('t-SNE Dimension 2');
-    legend('Location','southeastoutside');
+    legend({'C2', 'C1'}, 'Location','southeastoutside');
     grid on;
 end
