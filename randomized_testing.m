@@ -82,7 +82,7 @@ for idx = 1:num_combinations
         continue;
     end
     disp('Analyzing input data...');
-    [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(X,y);
+    [h_ttest, p_ttest, p_ranksum, h_ranksum, c1_pdists, c2_pdists] = compare_distributions(X,y);
 
 
     %TODO: If input data is biased, check the latent spaces for increasing

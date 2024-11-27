@@ -13,7 +13,7 @@ Y = tsne(X');
 plot_latent_space(Y,y,1);
 
 disp('Analyzing input data...');
-[h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(X,y)
+[h_ttest, p_ttest, p_ranksum, h_ranksum, c1_pdists, c2_pdists] = compare_distributions(X,y)
 
 analyze_network(net, X, y, 3, true);
 

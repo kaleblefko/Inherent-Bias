@@ -1,4 +1,4 @@
-function [h_ttest, p_ttest, p_ranksum, h_ranksum]=compare_distributions(dataset, y)
+function [h_ttest, p_ttest, p_ranksum, h_ranksum, c1_pairwise_distances, c2_pairwise_distances]=compare_distributions(dataset, y)
     c1_pairwise_distances = pdist(dataset(:,(y==1))');
     c2_pairwise_distances = pdist(dataset(:,(y==-1))');
     c1_clean = c1_pairwise_distances(~isnan(c1_pairwise_distances));
