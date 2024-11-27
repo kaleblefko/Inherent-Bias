@@ -11,7 +11,7 @@ function [possible_bias]=analyze_network(net, X, y, num_hidden_layers, plot_late
             [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(hidden_layer_outputs, y)
         end
 
-        if (~h_ttest || ~h_ranksum)
+        if (h_ttest || h_ranksum)
             possible_bias = true;
         end
 

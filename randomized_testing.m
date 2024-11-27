@@ -92,7 +92,7 @@ for idx = 1:num_combinations
         continue;
     end
 
-    if ~h_ranksum || ~h_ttest
+    if h_ranksum || h_ttest
         disp('Combination not suitable.')
         continue;
     end
