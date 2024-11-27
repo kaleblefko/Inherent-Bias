@@ -24,7 +24,9 @@ function [idxs, ratios] = generate_visualization(C1, C2, net, num_hidden_layers,
     hold off
 
     disp('Analyzing input data...');
-    [h_ttest, p_ttest, p_ranksum, h_ranksum, c1_pdists, c2_pdists] = compare_distributions(X,y)
+    [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(X,y)
+    c1_pdists = pdist(X(:,(y==1))');
+    c2_pdists = pdist(X(:,(y==-1))');
     plot_pdist_histograms(c1_pdists, c2_pdists, p_ttest, p_ranksum, 2, 0);
         
     analyze_network(net, X, y, num_hidden_layers, true, true, idxs, plot_hist);

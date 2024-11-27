@@ -6,11 +6,13 @@ function [possible_bias]=analyze_network(net, X, y, num_hidden_layers, plot_late
         fprintf("Analyzing layer %d...\n", i);
         if i == 1
             [Y, hidden_layer_outputs] = obtain_latent_space_representation(net, X, i);
-            [h_ttest, p_ttest, p_ranksum, h_ranksum, c1_pdists, c2_pdists] = compare_distributions(hidden_layer_outputs, y)
+            [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(hidden_layer_outputs, y)
         else
             [Y, hidden_layer_outputs] = obtain_latent_space_representation(net, hidden_layer_outputs, i);
-            [h_ttest, p_ttest, p_ranksum, h_ranksum, c1_pdists, c2_pdists] = compare_distributions(hidden_layer_outputs, y)
+            [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(hidden_layer_outputs, y)
         end
+        c1_pdists = pdist(hidden_layer_outputs(:,(y==1))');
+        c2_pdists = pdist(hidden_layer_outputs(:,(y==-1))');
         if (h_ttest || h_ranksum)
             possible_bias = true;
         end
