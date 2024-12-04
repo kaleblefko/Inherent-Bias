@@ -24,6 +24,6 @@ function plot_data(C1, C2, dimensions)
         X = [C1 C2];
         y = [ones(1,size(C1,2))*1 ones(1,size(C2,2))*-1];
         Y = tsne(X');
-        plot_latent_space(Y,y,1);
+        plot_latent_space(Y,y,1,X);
     end
 end

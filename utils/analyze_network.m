@@ -18,7 +18,7 @@ function [possible_bias]=analyze_network(net, X, y, num_hidden_layers, plot_late
         end
 
         if plot_latent && (size(Y, 2) >= 2)
-            plot_latent_space(Y, y, plot_num, i);
+            plot_latent_space(Y, y, plot_num, i, hidden_layer_outputs);
             plot_num = plot_num + 1;
             equalize_axes();
             if plot_pair
