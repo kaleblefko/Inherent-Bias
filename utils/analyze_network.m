@@ -1,15 +1,20 @@
-function [possible_bias]=analyze_network(net, X, y, num_hidden_layers, plot_latent, plot_pair, idxs, plot_hist)
+function [possible_bias, results]=analyze_network(net, X, y, num_hidden_layers, plot_latent, plot_pair, idxs, plot_hist)
     possible_bias = false;
     plot_num = 3;
+    results = zeros(2, num_hidden_layers);
     for i=1:num_hidden_layers
 
-        fprintf("Analyzing layer %d...\n", i);
+        % fprintf("Analyzing layer %d...\n", i);
         if i == 1
             [Y, hidden_layer_outputs] = obtain_latent_space_representation(net, X, i);
-            [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(hidden_layer_outputs, y)
+            [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(hidden_layer_outputs, y);
+            results(1, i) = p_ttest;
+            results(2, i) = p_ranksum;
         else
             [Y, hidden_layer_outputs] = obtain_latent_space_representation(net, hidden_layer_outputs, i);
-            [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(hidden_layer_outputs, y)
+            [h_ttest, p_ttest, p_ranksum, h_ranksum] = compare_distributions(hidden_layer_outputs, y);
+            results(1, i) = p_ttest;
+            results(2, i) = p_ranksum;
         end
         c1_pdists = pdist(hidden_layer_outputs(:,(y==1))');
         c2_pdists = pdist(hidden_layer_outputs(:,(y==-1))');
