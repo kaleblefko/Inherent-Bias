@@ -28,13 +28,13 @@ for i = 1:n
     if possible_bias
 
         for ttest_idx = 1:length(results(1, :))
-            if results(1, ttest_idx) > p_thresh
+            if results(1, ttest_idx) < p_thresh
                 ttest_bias = true;
                 break
             end
         end
         for ranksum_idx = 1:length(results(2, :))
-            if results(2, ranksum_idx) > p_thresh
+            if results(2, ranksum_idx) < p_thresh
                 ranksum_bias = true;
                 break
             end
@@ -64,14 +64,14 @@ for i = 1:n
 
     if possible_bias
         for ttest_idx = 1:length(results(1, :))
-            if results(1, ttest_idx) > p_thresh
+            if results(1, ttest_idx) < p_thresh
                 ttest_bias = true;
                 break
             end
         end
 
         for ranksum_idx = 1:length(results(2, :))
-            if results(2, ranksum_idx) > p_thresh
+            if results(2, ranksum_idx) < p_thresh
                 ranksum_bias = true;
                 break
             end
