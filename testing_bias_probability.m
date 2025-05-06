@@ -1,7 +1,7 @@
 addpath("./utils");
 rng(0,'twister');
 close all;clear all;clc
-n = 500;
+n = 1000;
 p_thresh = 0.05;
 %SAME DATA SAME NETWORK%
 same_data_same_network_bias_ratio = 0;
@@ -44,10 +44,7 @@ for i = 1:n
             bias_counter = bias_counter + 1;
             
         end
-        
-
-        fprintf("%d / %d\n", bias_counter, i);
-        disp(results);
+       
     end
 end
 
@@ -60,10 +57,11 @@ for i = 1:n
     ttest_bias = false;
     ranksum_bias = false;
     init_net = create_and_train_network(number_hidden_layers, max_neurons, dim, train_fnc, X, y);
-    [possible_bias, results] = analyze_network(net, X, y, number_hidden_layers, false);
+    [possible_bias, results] = analyze_network(init_net, X, y, number_hidden_layers, false);
 
     if possible_bias
         for ttest_idx = 1:length(results(1, :))
+            disp(results(1, ttest_idx))
             if results(1, ttest_idx) < p_thresh
                 ttest_bias = true;
                 break
@@ -71,6 +69,7 @@ for i = 1:n
         end
 
         for ranksum_idx = 1:length(results(2, :))
+            disp(results(2, ranksum_idx))
             if results(2, ranksum_idx) < p_thresh
                 ranksum_bias = true;
                 break
@@ -81,9 +80,8 @@ for i = 1:n
             bias_counter = bias_counter + 1;
             
         end
-        disp(results);
 
-        fprintf("%d / %d\n", bias_counter, i);
+
     end
 end
 
